@@ -41,7 +41,8 @@ contract ERC721Escrow is ERC721Holder {
     function isLocked(ERC721Token _lockedToken, uint _tokenId) 
         public view returns (bool locked) {
         if(deposits[_lockedToken].exists) {
-            return deposits[_lockedToken].isWithdrawn[_tokenId];
+            if(!deposits[_lockedToken].isWithdrawn[_tokenId]) return true;
+            else return false;
         }
         else return false;
     }
