@@ -26,7 +26,7 @@ contract ERC721Escrow is ERC721Holder {
     function depositToken(address _tokenAddress, uint _tokenId)
         public returns (uint submissionId) {
         ERC721Token tokenContract = ERC721Token(_tokenAddress);
-        require(tokenContract.ownerOf(1) == address(this));
+        require(tokenContract.ownerOf(_tokenId) == address(this));
         submissionId = oracleContract.submitToken(tokenContract, _tokenId);
         emit TokenDeposited(_tokenAddress, _tokenId, submissionId);
         if(!deposits[tokenContract].exists){
