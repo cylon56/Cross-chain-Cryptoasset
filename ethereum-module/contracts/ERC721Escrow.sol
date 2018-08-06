@@ -7,7 +7,7 @@ import "./HyperledgerOracle.sol";
 contract ERC721Escrow is ERC721Holder {
 
     HyperledgerOracle public oracleContract;
-    mapping(address => TokenDeposits) deposits;
+    mapping(address => TokenDeposits) public deposits;
 
     struct TokenDeposits {
         bool exists;
@@ -26,7 +26,7 @@ contract ERC721Escrow is ERC721Holder {
     function depositToken(address _tokenAddress, uint _tokenId)
         public returns (uint submissionId) {
         ERC721Token tokenContract = ERC721Token(_tokenAddress);
-        tokenContract.safeTransferFrom(msg.sender, this, _tokenId);
+        require(tokenContract.ownerOf(1) == address(this));
         submissionId = oracleContract.submitToken(tokenContract, _tokenId);
         emit TokenDeposited(_tokenAddress, _tokenId, submissionId);
         if(!deposits[tokenContract].exists){
